@@ -56,16 +56,20 @@ public class Main {
 
     private static void geraTabuleiro(Jogador jogador1, Jogador jogador2, Jogador jogadorJogando, Tabuleiro tabuleiro){
         ArrayList<Posicao> posicaoNoTabuleiro = tabuleiro.getPosicoes();
+        System.out.println("   A      B     C      D      E       F      G       H");
         for (Posicao posicao : posicaoNoTabuleiro) {
-            if (posicao.getPeca()!=null){
-                System.out.println(posicao.getPeca().icone);
+            if (posicao.getPeca()!=null) {
+                System.out.print("| " + posicao.getPeca().icone + " |");
+            }
+                else{
+                    System.out.print("|        |");
+                }
                 if ((posicaoNoTabuleiro.indexOf(posicao)+1)%8 == 0){
-                    System.out.println("\n");
+                    System.out.print("\n");
 
                 }
             }
         }
-    }
 
     private static boolean validarVitoria(Jogador adversario){
         for (Peca peca: adversario.getPecas()) {
