@@ -20,6 +20,10 @@ public abstract class Peca {
 
     private ArrayList<Posicao> possiveisMovimentos;
 
+    public String getIcone() {
+        return "[-" + icone + "-]";
+    }
+
     public Posicao getPosicao() {
         return posicao;
     }
@@ -69,13 +73,14 @@ public abstract class Peca {
     }
 
     public boolean verificaPeca(Posicao posicao, ArrayList<Posicao> possiveisMovimentos) {
-        if(posicao.getPeca()==null){
+        if (posicao.getPeca() == null) {
             possiveisMovimentos.add(posicao);
             return false;
+        } else {
+            if (!posicao.getPeca().getCor().equals(this.getCor())) {
+                possiveisMovimentos.add(posicao);
+            }
+            return true;
         }
-        if (!posicao.getPeca().getCor().equals(this.getCor())) {
-            possiveisMovimentos.add(posicao);
-        }
-        return true;
     }
 }

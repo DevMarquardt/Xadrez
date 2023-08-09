@@ -3,33 +3,17 @@ import java.util.Scanner;
 
 public class Main {
         static Scanner sc = new Scanner(System.in);
-        static Jogador jogador1 = new Jogador("");
-        static Jogador jogador2 = new Jogador("");
+        static Jogador jogador1 = new Jogador("aa");
+        static Jogador jogador2 = new Jogador("bb");
         static Jogador jogadorJogando = jogador1;
+        static Jogador jogadorNaoJogando = jogador2;
         static Tabuleiro tabuleiro = new Tabuleiro();
-        static Peca peca = new Peca() {
-            @Override
-            public ArrayList<Posicao> possiveisMovimentos(Tabuleiro tabuleiro) {
-                return null;
-            }
-        };
         public static void main(String[] args) {
 
          jogador1.setCor("Branco", tabuleiro);
          jogador2.setCor("Preto", tabuleiro);
 
          definirNome(jogador1, jogador2, jogadorJogando);
-        //escolha da peça
-        //System.out.println(jogador1.getPecas());
-        //int escolhaPeca = sc.nextInt();
-        //Peca peca = jogador1.getPecas().get(escolhaPeca);
-        //System.out.println(peca);
-
-        //escolha da posição
-        //ArrayList<Posicao> posicoes = peca.possiveisMovimentos((tabuleiro));
-        //int escolhaPosicao = sc.nextInt();
-        //Posicao posicao = posicoes.get(escolhaPosicao);
-        //jogador1.moverPeca(peca,posicao,tabuleiro,jogador2);
     }
 
     private static void definirNome(Jogador jogador1, Jogador jogador2, Jogador jogadorJogando){
@@ -39,37 +23,53 @@ public class Main {
             jogador1.setNome(nome1);
             System.out.println("Jogador 2 nome: ");
             String nome2 = sc.next();
-            jogador1.setNome(nome2);
+            jogador2.setNome(nome2);
         }while(jogador1.getNome()=="" && jogador2.getNome()=="");
 
-        geraTabuleiro(jogador1, jogador2, jogadorJogando, tabuleiro);
+        geraTabuleiro(tabuleiro);
 
     }
 
-    public static void loopJogadorJogando(Jogador jogador1, Jogador jogador2, Jogador jogadorJogando){
-        if (jogadorJogando==jogador1){
-            jogadorJogando=jogador2;
-        }else if(jogadorJogando==jogador2){
-            jogadorJogando=jogador1;
-        }
+
+    private static void geraTabuleiro(Tabuleiro tabuleiro) {
+        int joga=0;
+        do {
+            tabuleiro.geraTabuleiro(jogador1, jogador2);
+            if (joga%2==0){
+                jogadorJogando=jogador2;
+                jogadorNaoJogando = jogador1;
+            }else {
+                jogadorJogando=jogador1;
+                jogadorNaoJogando = jogador2;
+            }
+
+            jogadorJogando.pecasDisponiveis(tabuleiro);
+            Peca peca = null;
+            System.out.println("Turno do " + jogadorJogando.getNome());
+            System.out.println("Qual peça você deseja movimentar? ");
+            int escolhaPeca = sc.nextInt();
+            if (escolhaPeca<64 && jogadorJogando.getPecas().contains(tabuleiro.getPosicoes().get(escolhaPeca).getPeca())) {
+                peca = tabuleiro.getPosicoes().get(escolhaPeca).getPeca();
+                System.out.println("Peça: " + peca.icone + " | posição " + tabuleiro.getPosicaoPecaTabuleiro(peca));
+                System.out.println(peca.possiveisMovimentos(tabuleiro));
+                tabuleiro.possiveisMovimentos(peca);
+                System.out.println("Para qual posição você deseja mover? ");
+                int escolhaPosicao = sc.nextInt();
+
+                if (escolhaPosicao<64 && peca.possiveisMovimentos(tabuleiro).contains(tabuleiro.getPosicoes().get(escolhaPosicao))) {
+                    jogadorJogando.moverPeca(tabuleiro, peca, escolhaPosicao);
+                    joga++;
+                } else {
+                    System.out.println("Não da pra mover pra ca");
+                    System.out.println("tenta dnv");
+                }
+            } else {
+                System.out.println("Não da pra mover pra ca");
+            }
+        } while (!validarVitoria(jogadorNaoJogando));
     }
 
-    private static void geraTabuleiro(Jogador jogador1, Jogador jogador2, Jogador jogadorJogando, Tabuleiro tabuleiro){
-        ArrayList<Posicao> posicaoNoTabuleiro = tabuleiro.getPosicoes();
-        System.out.println("   A      B     C      D      E       F      G       H");
-        for (Posicao posicao : posicaoNoTabuleiro) {
-            if (posicao.getPeca()!=null) {
-                System.out.print("| " + posicao.getPeca().icone + " |");
-            }
-                else{
-                    System.out.print("|        |");
-                }
-                if ((posicaoNoTabuleiro.indexOf(posicao)+1)%8 == 0){
-                    System.out.print("\n");
 
-                }
-            }
-        }
 
     private static boolean validarVitoria(Jogador adversario){
         for (Peca peca: adversario.getPecas()) {

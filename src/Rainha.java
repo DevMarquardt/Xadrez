@@ -22,10 +22,10 @@ public class Rainha extends Peca {
     public ArrayList<Posicao> possiveisMovimentos(Tabuleiro tabuleiro) {
         Posicao posicaoAtual = this.getPosicao();
         ArrayList<Posicao> posicoesTabuleiro = tabuleiro.getPosicoes();
-        int posicaoNoTabuleiro = posicoesTabuleiro.indexOf(posicaoAtual);
+        int posicaoNoTabuleiro = tabuleiro.getPosicaoPecaTabuleiro(this);
         ArrayList<Posicao> possiveisMovimentos = new ArrayList<>();
 
-        for (int i = (validaExtremidade(posicaoNoTabuleiro) ? 64 : posicaoNoTabuleiro + 7); i < posicoesTabuleiro.size(); i += 7) {
+        for (int i = (validaExtremidade(posicaoNoTabuleiro) ? 64 : posicaoNoTabuleiro + 8); i < posicoesTabuleiro.size(); i += 8) {
             if (verificaPeca(posicoesTabuleiro.get(i), possiveisMovimentos) || validaExtremidade(i)) {
                 break;
             }

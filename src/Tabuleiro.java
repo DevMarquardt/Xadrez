@@ -10,13 +10,69 @@ public class Tabuleiro {
                 "posicoes=" + posicoes +
                 '}';
     }
-    public Peca getPecaPorPosicao(String posicaoString) {
-        Posicao posicao = posicoes.get(Integer.parseInt(posicaoString));
-        if (posicao != null) {
-            return posicao.getPeca();
+
+    public int getPosicaoPecaTabuleiro(Peca peca){
+        for (int i = 0; i < posicoes.size(); i++) {
+            if (posicoes.get(i).getPeca() == peca){
+                return i;
+            }
         }
-        return null;
+        return 0;
     }
+
+    public void geraTabuleiro(Jogador j1, Jogador j2){
+        ArrayList <Peca> pecasBrancas = new ArrayList<>();
+        ArrayList <Peca> pecasPretas = new ArrayList<>();
+        for (Posicao posicao:
+                posicoes) {
+            if(posicoes.get(posicoes.indexOf(posicao)).getPeca() != null){
+                if(posicoes.get(posicoes.indexOf(posicao)).getPeca().getCor().equals("Branco")){
+                    pecasBrancas.add(posicoes.get(posicoes.indexOf(posicao)).getPeca());
+                }else {
+                    pecasPretas.add(posicoes.get(posicoes.indexOf(posicao)).getPeca());
+                }
+            }
+
+        }
+        j1.setPecas(pecasBrancas);
+        j2.setPecas(pecasPretas);
+
+        for (Posicao posicao : posicoes) {
+            System.out.print(posicoes.get(posicoes.indexOf(posicao)).getPeca() != null ? String.valueOf(posicao.getPeca().getIcone()): "[- -]");
+            if ((posicoes.indexOf(posicao)+1)%8 == 0){
+                System.out.print("\n");
+            }
+
+        }
+    }
+
+    public void possiveisMovimentos(Peca peca){
+        ArrayList<Posicao> possiveis = peca.possiveisMovimentos(this);
+        for (Posicao posicao:
+                posicoes) {
+            if(possiveis.contains(posicao)){
+                if(posicoes.indexOf(posicao)<10){
+                    System.out.print("[- 0" + posicoes.indexOf(posicao) + "-]");
+                }else {
+                    System.out.print("[-" + posicoes.indexOf(posicao) + "-]");
+                }
+            }
+            else if(posicoes.get(posicoes.indexOf(posicao)).getPeca() != null){
+                if(posicoes.indexOf(posicao)<10){
+                    System.out.print("[-"+posicoes.get(posicoes.indexOf(posicao)).getPeca().icone+"-]");
+                }else {
+                    System.out.print("[-"+posicoes.get(posicoes.indexOf(posicao)).getPeca().icone+"-]");
+                }
+            }
+            else if(posicao.getPeca() != peca){
+                System.out.print("[- -]");
+            }
+            if ((posicoes.indexOf(posicao)+1)%8 == 0){
+                System.out.print("\n");
+            }
+        }
+    }
+
 
     public Tabuleiro(){
         for (int i = 0; i < 64 ; i++) {
@@ -58,10 +114,6 @@ public class Tabuleiro {
                 posicoes.get(i).setPeca((new Rei("Branco", posicoes.get(i))));
             }
         }
-    }
-
-    public void removerPeca(Posicao posicao){
-
     }
 
     public ArrayList<Posicao> getPosicoes() {

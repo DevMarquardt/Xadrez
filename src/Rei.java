@@ -25,7 +25,7 @@ public class Rei extends Peca {
     @Override
     public ArrayList<Posicao> possiveisMovimentos(Tabuleiro tabuleiro) {
         Posicao posicaoAtual = this.getPosicao();
-        int posicaoNoTabuleiro = tabuleiro.getPosicoes().indexOf(posicaoAtual);
+        int posicaoNoTabuleiro = tabuleiro.getPosicaoPecaTabuleiro(this);
         ArrayList<Posicao> possiveisMovimentos = new ArrayList<>();
 
         for (Posicao posicao : tabuleiro.getPosicoes()){

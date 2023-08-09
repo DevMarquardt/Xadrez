@@ -5,6 +5,12 @@ public class Jogador {
     private String cor;
     private double pontos;
 
+    public void pecasDisponiveis(Tabuleiro tabuleiro){
+        for (Peca peca: this.pecas) {
+            System.out.print(tabuleiro.getPosicaoPecaTabuleiro(peca)+" - "+peca.icone+ " | ");
+        }
+    }
+
     public void setCor(String cor, Tabuleiro tabuleiro) {
         this.cor = cor;
         for (Posicao posicao: tabuleiro.getPosicoes()) {
@@ -53,14 +59,9 @@ public class Jogador {
         return pecas;
     }
 
-    public boolean moverPeca(Peca peca, Posicao posicao, Tabuleiro tabuleiro, Jogador adversario){
-
-        Peca pecaAdversaria = posicao.getPeca();
-        boolean valida = peca.mover(tabuleiro, posicao);
-        if (pecaAdversaria != null && valida){
-            adversario.pecas.remove(pecaAdversaria);
-        }
-        return valida;
+    public void moverPeca(Tabuleiro tabuleiro, Peca peca, int movimento){
+        tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(peca)).setPeca(null);
+        tabuleiro.getPosicoes().get(movimento).setPeca(peca);
     }
 
 

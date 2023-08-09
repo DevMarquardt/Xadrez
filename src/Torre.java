@@ -18,7 +18,7 @@ public class Torre extends Peca {
     public ArrayList<Posicao> possiveisMovimentos(Tabuleiro tabuleiro) {
         Posicao posicaoAtual = this.getPosicao();
         ArrayList<Posicao> posicoesTabuleiro = tabuleiro.getPosicoes();
-        int posicaoNoTabuleiro = posicoesTabuleiro.indexOf(posicaoAtual);
+        int posicaoNoTabuleiro = tabuleiro.getPosicaoPecaTabuleiro(this);
         ArrayList<Posicao> possiveisMovimentos = new ArrayList<>();
 
         for (Posicao posicao : tabuleiro.getPosicoes()){
