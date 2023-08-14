@@ -119,4 +119,13 @@ public class Tabuleiro {
     public ArrayList<Posicao> getPosicoes() {
         return posicoes;
     }
+
+    public int getPosicaoNoTabuleiro(Posicao posicao) {
+        for (int i=0; i<posicoes.size(); i++){
+            if (posicoes.get(i) == posicao){
+                return i;
+            }
+        }
+    return 0;
+    }
 }
