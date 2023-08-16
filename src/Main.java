@@ -113,7 +113,7 @@ public class Main {
                     if (!(pecaAliada instanceof Rei)) {
                         for (Posicao posicaoDefendendo :
                                 pecaAliada.possiveisMovimentos(tabuleiro)) {
-
+                                Peca peca = tabuleiro.getPosicoes().get(tabuleiro.getPosicaoNoTabuleiro(posicaoDefendendo)).getPeca();
                             atual = tabuleiro.getPosicaoPecaTabuleiro(pecaAliada);
 
                             tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(pecaAliada)).setPeca(null);
@@ -124,7 +124,7 @@ public class Main {
                                 podeSerDefendido = true;
                             }
 
-                            tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(pecaAliada)).setPeca(null);
+                            tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(pecaAliada)).setPeca(peca);
                             tabuleiro.getPosicoes().get(atual).setPeca(pecaAliada);
                         }
                     }
@@ -133,6 +133,7 @@ public class Main {
                                 rei.possiveisMovimentos(tabuleiro)) {
 
                             atual = tabuleiro.getPosicaoPecaTabuleiro(rei);
+                            Peca peca = tabuleiro.getPosicoes().get(tabuleiro.getPosicaoNoTabuleiro(posicaorei)).getPeca();
 
                             tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(rei)).setPeca(null);
                             tabuleiro.getPosicoes().get(tabuleiro.getPosicaoNoTabuleiro(posicaorei)).setPeca(rei);
@@ -141,7 +142,7 @@ public class Main {
                                 possiveisMovimentosRei.remove(posicaorei);
                             }
 
-                            tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(rei)).setPeca(null);
+                            tabuleiro.getPosicoes().get(tabuleiro.getPosicaoPecaTabuleiro(rei)).setPeca(peca);
                             tabuleiro.getPosicoes().get(atual).setPeca(rei);
                         }
                     }
@@ -187,10 +188,9 @@ public class Main {
 
     private static void geraTabuleiro(Tabuleiro tabuleiro, Jogador jogador1, Jogador jogador2) {
         int joga=0;
-        Jogador jogadorJogando = jogador1;
-        Jogador jogadorNaoJogando = jogador2;
+        Jogador jogadorJogando;
+        Jogador jogadorNaoJogando;
         do {
-            tabuleiro.geraTabuleiro(jogador1, jogador2);
             if (joga%2==0){
                 jogadorJogando=jogador2;
                 jogadorNaoJogando = jogador1;
@@ -198,10 +198,10 @@ public class Main {
                 jogadorJogando=jogador1;
                 jogadorNaoJogando = jogador2;
             }
-
+            verificaXeque(tabuleiro, jogadorJogando, jogadorNaoJogando);
+            tabuleiro.geraTabuleiro(jogador1, jogador2);
             jogadorJogando.pecasDisponiveis(tabuleiro);
             Peca peca = null;
-            verificaXeque(tabuleiro, jogadorJogando, jogadorNaoJogando);
             System.out.println("Turno do " + jogadorJogando.getNome());
             System.out.println("Qual peça você deseja movimentar? ");
             int escolhaPeca = sc.nextInt();
